@@ -152,7 +152,6 @@ def detect_gold(image, mm_per_px, hsv_lower, hsv_upper, mass_threshold):
         return dict(
             label='negative', gold_mass_ug=0, gold_fraction=0,
             pcb_area_mm2=0, gold_area_mm2=0,
-            pcb_mask=pcb_mask,
             gold_mask=np.zeros_like(pcb_mask),
             annotated_image=image.copy(),
             mm_per_px=mm_per_px,
@@ -186,7 +185,6 @@ def detect_gold(image, mm_per_px, hsv_lower, hsv_upper, mass_threshold):
         gold_fraction= gold_frac,
         pcb_area_mm2 = pcb_mm2,
         gold_area_mm2= gold_mm2,
-        pcb_mask     = pcb_mask,
         gold_mask    = gold_mask,
         annotated_image = ann,
         mm_per_px    = mm_per_px,
@@ -307,15 +305,11 @@ metric_card(c5, "Scale",         f"{1/mm_pp:.0f} px/mm",                "green")
 st.markdown("<div style='margin-top:1.5rem'></div>", unsafe_allow_html=True)
 
 # ── Images ────────────────────────────────────────────────────────────────────
-col_orig, col_mask, col_ann = st.columns(3)
+col_orig, col_ann = st.columns(2)
 
 with col_orig:
     st.markdown("**Original**")
     st.image(bgr_to_pil(img_bgr), use_container_width=True)
-
-with col_mask:
-    st.markdown("**PCB Mask**")
-    st.image(gray_to_pil(result['pcb_mask']), use_container_width=True)
 
 with col_ann:
     st.markdown("**Annotated** *(green = PCB, blue = gold)*")
